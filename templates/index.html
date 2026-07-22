@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI-Powered Data Analysis Assistant</title>
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Premium Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <!-- Custom Glassmorphism Stylesheet -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+    <div class="background-glows">
+        <div class="glow-1"></div>
+        <div class="glow-2"></div>
+    </div>
+
+    <div class="container">
+        <!-- HEADER -->
+        <header>
+            <div class="logo">
+                <i class="fa-solid fa-chart-pie logo-icon"></i>
+                <h1>AI-Powered Data Analysis Assistant</h1>
+            </div>
+            <p class="subtitle">Data Analyst Portfolio Project — Automated Data Preprocessing & Analytics</p>
+        </header>
+
+        <!-- UPLOAD SECTION -->
+        <section id="upload-section" class="glass-card upload-card animate-fade-in">
+            <div class="upload-header">
+                <h2><i class="fa-solid fa-file-csv"></i> Ingest Your Dataset</h2>
+                <p>Upload a CSV file to automatically inspect, clean, and generate AI-powered business insights..</p>
+            </div>
+
+            <div id="drop-zone" class="drop-zone">
+                <i class="fa-solid fa-cloud-arrow-up upload-icon"></i>
+                <p class="drop-text">Drag & drop your CSV file here or <span class="browse-link">browse files</span></p>
+                <input type="file" id="file-input" accept=".csv" style="display: none;">
+                <p class="file-limits">Maximum size: 16 MB. Only .csv format supported.</p>
+            </div>
+
+            <div class="sample-data-container">
+                <p class="sample-text">Don't have a dataset? Test the dashboard with one of our pre-loaded samples:</p>
+                <div class="sample-buttons">
+                    <button id="btn-sample-sales" class="btn btn-secondary">
+                        <i class="fa-solid fa-basket-shopping"></i> Retail Sales Sample
+                    </button>
+                    <button id="btn-sample-hr" class="btn btn-secondary">
+                        <i class="fa-solid fa-user-tie"></i> Employee HR Sample
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- PROCESSING PROGRESS PANEL -->
+        <section id="progress-section" class="glass-card progress-card hidden">
+            <h3><i class="fa-solid fa-cog fa-spin spinner"></i> Processing Dataset</h3>
+            <p class="progress-sub">Executing full Data Analyst cleaning pipeline...</p>
+
+            <ul class="progress-steps">
+                <li id="step-upload" class="step"><i class="fa-solid fa-circle-dot"></i> Uploading Dataset</li>
+                <li id="step-inspect" class="step"><i class="fa-solid fa-circle-dot"></i> Inspecting Columns</li>
+                <li id="step-missing" class="step"><i class="fa-solid fa-circle-dot"></i> Detecting & Imputing Missing
+                    Values</li>
+                <li id="step-outliers" class="step"><i class="fa-solid fa-circle-dot"></i> Checking for Outliers (IQR
+                    Method)</li>
+                <li id="step-duplicates" class="step"><i class="fa-solid fa-circle-dot"></i> Detecting & Removing
+                    Duplicates</li>
+                <li id="step-kpis" class="step"><i class="fa-solid fa-circle-dot"></i> Generating Business KPIs</li>
+                <li id="step-insights" class="step"><i class="fa-solid fa-circle-dot"></i> Generating Key Insights</li>
+            </ul>
+        </section>
+
+        <!-- DASHBOARD CONTAINER (Initially Hidden) -->
+        <div id="dashboard-container" class="hidden dashboard-stack">
+            <!-- UPLOAD ANOTHER -->
+            <div class="action-bar animate-fade-in">
+                <button id="btn-upload-another" class="btn btn-secondary">
+                    <i class="fa-solid fa-arrow-left"></i> Upload Another File
+                </button>
+            </div>
+
+            <!-- 1. DATASET INFORMATION -->
+            <section id="dataset-info-section" class="glass-card dataset-info-section animate-fade-in">
+                <h3><i class="fa-solid fa-circle-info"></i> Dataset Information</h3>
+                <p class="section-desc">Overview of the uploaded dataset structure and composition.</p>
+                <div id="metadata-grid" class="metadata-grid">
+                    <div class="meta-card">
+                        <span class="meta-label">File Name</span>
+                        <span id="meta-filename" class="meta-value" title="sales.csv">sales.csv</span>
+                        <script>
+                            (function () {
+                                var el = document.getElementById('meta-filename');
+                                if (el) {
+                                    var observer = new MutationObserver(function () {
+                                        el.title = el.textContent || el.innerText;
+                                    });
+                                    observer.observe(el, { childList: true, characterData: true, subtree: true });
+                                    el.title = el.textContent || el.innerText;
+                                }
+                            })();
+                        </script>
+                    </div>
+                    <div class="meta-card">
+                        <span class="meta-label">Total Rows</span>
+                        <span id="meta-rows" class="meta-value">0</span>
+                    </div>
+                    <div class="meta-card">
+                        <span class="meta-label">Total Columns</span>
+                        <span id="meta-cols" class="meta-value">0</span>
+                    </div>
+                    <div class="meta-card">
+                        <span class="meta-label">Dataset Size</span>
+                        <span id="meta-size" class="meta-value">0 KB</span>
+                    </div>
+                    <div class="meta-card">
+                        <span class="meta-label">Missing Cell %</span>
+                        <span id="meta-missing" class="meta-value">0.00%</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 2. PREPROCESSING SUMMARY -->
+            <section id="summary-section" class="glass-card summary-card animate-fade-in">
+                <h3><i class="fa-solid fa-broom"></i> Preprocessing Summary</h3>
+                <p class="section-desc">Summary of actions performed automatically by the preprocessing engine.</p>
+                <div id="summary-logs-container" class="logs-container">
+                    <!-- Filled by JS -->
+                </div>
+            </section>
+
+            <!-- 3. DYNAMIC KPI CARDS -->
+            <section id="kpi-section" class="glass-card kpi-section animate-fade-in">
+                <h3><i class="fa-solid fa-key"></i> Key Performance Indicators</h3>
+                <p class="section-desc">Key business metrics identified dynamically from your columns.</p>
+                <div id="kpi-container" class="kpi-grid">
+                    <!-- Filled by JS -->
+                </div>
+            </section>
+
+            <!-- 4. KEY INSIGHTS -->
+            <section id="insights-section" class="glass-card insights-card animate-fade-in">
+                <div class="insights-header">
+                    <div>
+                        <h3><i class="fa-solid fa-lightbulb"></i> Key Insights</h3>
+                        <p class="section-desc">Automatically generated analytical observations based on your dataset.
+                        </p>
+                    </div>
+                    <span class="insights-badge" id="insights-count-badge"></span>
+                </div>
+                <ul id="insights-list" class="insights-list">
+                    <!-- Filled by JS -->
+                </ul>
+            </section>
+
+            <!-- 5. DATASET PREVIEW -->
+            <section id="preview-section" class="glass-card preview-card animate-fade-in">
+                <div class="preview-header-row">
+                    <div>
+                        <h3><i class="fa-solid fa-table"></i> Cleaned Data Preview</h3>
+                        <p class="section-desc">Scrollable preview of the first 20 rows of your fully processed dataset.
+                        </p>
+                    </div>
+                    <div class="table-actions">
+                        <div class="search-box">
+                            <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                            <input type="text" id="table-search" placeholder="Search preview...">
+                        </div>
+                    </div>
+                </div>
+                <div class="table-container">
+                    <table id="preview-table">
+                        <thead>
+                            <tr id="table-headers">
+                                <!-- Filled by JS -->
+                            </tr>
+                        </thead>
+                        <tbody id="table-rows">
+                            <!-- Filled by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- 6. DOWNLOAD CLEANED CSV -->
+            <div class="download-section animate-fade-in">
+                <a id="btn-download-cleaned" class="btn btn-primary btn-download-full" href="#" target="_blank">
+                    <i class="fa-solid fa-download"></i> Download Cleaned CSV
+                </a>
+            </div>
+        </div>
+
+        <!-- FOOTER -->
+        <footer>
+            <p>Data Analyst Portfolio Project — Powered by Flask & Pandas</p>
+            <p class="footer-note">Designed to showcase data preprocessing, outlier imputation, and dynamic dashboard
+                creation.</p>
+        </footer>
+    </div>
+
+    <!-- JavaScript Controller -->
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+
+</html>

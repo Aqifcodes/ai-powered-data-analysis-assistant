@@ -1,0 +1,22 @@
+Employee_ID,Name,Department,Salary,Joining_Date,Performance_Score,Is_Remote
+E101,Alice Smith,Engineering,115000,2022-03-15,4,True
+E102,Bob Johnson,Sales,72000,2021-06-01,3,False
+E103,Charlie Brown,Engineering,125000,2023-01-10,5,True
+E104,Diana Prince,Marketing,68000,2020-11-20,4,
+E105,Evan Wright,,85000,2024-02-01,3,True
+E106,Fiona Gallagher,HR,60000,2022-08-12,4,False
+E107,George Costanza,Sales,55000,2019-05-01,2,False
+E108,Harriet Tubman,Engineering,450000,2020-04-15,5,True
+E109,Ian Malcolm,HR,62000,2023-07-22,,False
+E110,Jane Doe,Marketing,,2022-10-05,3,True
+E111,Kevin Bacon,Sales,75000,2021-02-14,4,False
+E112,Lois Lane,Marketing,71000,2023-09-30,4,True
+E113,Monty Python,Engineering,130000,2020-01-05,5,True
+E113,Monty Python,Engineering,130000,2020-01-05,5,True
+E114,Nina Simone,HR,65000,2021-12-25,4,False
+E115,Oscar Wilde,Sales,80000,2023-11-11,3,True
+E116,Penelope Cruz,Engineering,120000,2022-04-01,5,True
+E117,Quentin Tarantino,Marketing,95000,2018-06-15,4,False
+E118,Rachel Green,Sales,70000,2022-07-19,3,False
+E119,Samwise Gamgee,HR,58000,2023-05-05,4,True
+E120,Tony Stark,Engineering,500000,2020-05-18,5,True
