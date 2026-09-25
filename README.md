@@ -1,150 +1,278 @@
+
 # AI-Powered Data Analysis Assistant
 
-An AI-assisted Data Analyst portfolio project that automates the data preparation and analysis workflow. Users can upload any CSV dataset, and the application automatically cleans the data, detects column types, generates relevant KPI cards, produces AI-powered business insights, and allows the cleaned dataset to be downloaded for further analysis.
+An intelligent data analysis platform that automatically inspects, cleans, preprocesses, and analyzes uploaded CSV datasets using **Python, Pandas, Flask, and Gemini AI**. The application transforms raw tabular data into meaningful KPIs and business insights with minimal user effort while preserving a privacy-first preprocessing pipeline.
 
 ---
 
-## 🚀 Key Features
+## Overview
 
-1. **Automatic Dataset Inspection**
-   - Detects dataset dimensions, missing values, duplicate rows, and inferred column types.
+Manual data cleaning is one of the most time-consuming tasks in data analysis. This project automates the complete preprocessing workflow and generates business-ready analytical insights through an interactive web interface.
 
-2. **Intelligent Data Cleaning**
-   - Removes duplicate records.
-   - Automatically imputes missing values.
-   - Uses Mean or Median imputation based on outlier detection.
-   - Fills categorical values using Mode.
+Users simply upload a CSV file, and the platform automatically:
 
-3. **Automatic Data Type Detection**
-   - Identifies Numeric, Categorical, Boolean, Date, and Identifier columns dynamically.
-
-4. **Dynamic KPI Generation**
-   - Generates relevant KPI cards based on the uploaded dataset instead of using fixed metrics.
-
-5. **AI-Powered Insight Generation**
-   - Uses Google's Gemini API to generate business-friendly insights from dataset summaries rather than hardcoded rules.
-
-6. **Dataset Preview**
-   - Displays a preview of the cleaned dataset before download.
-
-7. **Cleaned CSV Export**
-   - Allows users to download the processed dataset for further analysis.
+- Detects column types intelligently
+- Removes duplicate records
+- Handles missing values using adaptive imputation
+- Converts valid date columns
+- Generates dynamic KPI cards
+- Produces AI-powered business insights
+- Lets users preview and download the cleaned dataset
 
 ---
 
-## 🛠️ Tech Stack
+## Key Features
 
-- Python
-- Flask
-- Pandas
-- NumPy
-- Google Gemini API
+### Intelligent Data Preprocessing
+- Automatic column type detection
+- Duplicate row removal
+- Adaptive missing value handling
+- Datetime conversion
+- Data standardization
+
+### Dynamic Business Analytics
+- Dataset-aware KPI generation
+- Automatic business metric detection
+- Category-level analytical summaries
+- Statistical trend extraction
+
+### AI Insight Generation
+- Gemini-powered business insights
+- Context-aware analytical observations
+- Lightweight summary sent to AI (not the raw dataset)
+
+### Export & Preview
+- Interactive cleaned dataset preview
+- Download cleaned CSV
+- Download analysis report
 
 ---
 
-## 📂 Project Directory Structure
+## System Architecture
 
+```mermaid
+flowchart LR
+
+A[CSV Upload] --> B[Flask Backend]
+
+B --> C[Pandas DataFrame]
+
+C --> D[Preprocessing Engine]
+
+D --> E[Column Classification]
+
+E --> F[KPI Engine]
+
+E --> G[Analytics Summary]
+
+G --> H[Gemini AI]
+
+F --> I[Dashboard JSON]
+
+H --> I
+
+I --> J[Frontend Dashboard]
+
+J --> K[Preview + Download]
 ```
-Project/
+
+---
+
+## End-to-End Workflow
+
+```mermaid
+flowchart TD
+
+A[User uploads CSV]
+
+A --> B[Validate file]
+
+B --> C[Read with Pandas]
+
+C --> D[Remove duplicates]
+
+D --> E[Detect column types]
+
+E --> F[Handle missing values]
+
+F --> G[Generate dataset metadata]
+
+G --> H[Create dynamic KPIs]
+
+H --> I[Generate AI business insights]
+
+I --> J[Preview cleaned data]
+
+J --> K[Download cleaned CSV & report]
+```
+
+---
+
+## Project Structure
+
+```text
+AI-Powered-Data-Analysis-Assistant/
+
 │
-├── app.py
-├── config.py
+├── app.py                      # Flask routes & request handling
+├── config.py                   # Gemini API configuration
 ├── requirements.txt
 ├── README.md
 │
+├── utils/
+│   ├── data_processor.py       # Cleaning & preprocessing engine
+│   ├── analytics_engine.py     # KPIs, metadata & rule-based analytics
+│   └── ai_insights.py          # Gemini insight generation
+│
 ├── templates/
-│   └── index.html
+│   └── index.html              # Web interface
 │
 ├── static/
 │   ├── css/
 │   └── js/
-│
-├── uploads/
-│
-└── utils/
-    ├── data_processor.py
-    ├── analytics_engine.py
-    └── ai_insights.py
+|
+│── scratch/
+│   └── test_pipeline.py        # To run the test cases
+| 
+└── uploads/                    # Temporary processing files
 ```
 
 ---
 
-## 📊 Inside the Logic: Backend Workflow
+## How the Platform Works
 
-When a user uploads a CSV file, the application follows the workflow below:
+### Step 1 : Upload
 
-### Step 1: File Upload & Validation
-- The uploaded file is received through the Flask backend.
-- The system checks whether the file is a valid CSV.
-- Empty or invalid files are rejected with appropriate error messages.
+The user uploads any CSV dataset through the web interface. The backend validates the file format and loads it into a Pandas DataFrame.
 
-### Step 2: Dataset Loading
-- The CSV is loaded into a Pandas DataFrame.
-- Basic information such as the number of rows, columns, and missing values is collected.
+### Step 2 : Intelligent Preprocessing
 
-### Step 3: Automatic Data Cleaning
 The preprocessing engine automatically performs:
 
-- Removal of duplicate records
+- Exact duplicate removal
 - Missing value detection
-- Adaptive missing value imputation
-  - Uses **Median** when outliers are detected.
-  - Uses **Mean** when the data is normally distributed.
-- Mode imputation for categorical columns.
-- Automatic date conversion where applicable.
+- Adaptive imputation (Mean / Median / Mode)
+- Date conversion
+- Column type identification
 
-### Step 4: Column Type Detection
-The application automatically identifies each column as:
+No manual schema definition is required.
 
-- Numeric
-- Categorical
-- Boolean
-- Date
-- Identifier (ID)
+### Step 3 : Column Classification
 
-This allows the system to adapt its analysis to different datasets without requiring predefined schemas.
+Each column is classified into one of the following categories:
 
-### Step 5: KPI Generation
-Based on the detected column types, the application generates dataset-specific KPI cards such as:
+| Type | Example |
+|------|---------|
+| Identifier | Customer ID |
+| Business Metric | Revenue, Salary |
+| Date | Order Date |
+| Boolean | Is Active |
+| Categorical | Region |
+| Numeric | Age, Quantity |
+
+This classification drives the entire analytics pipeline.
+
+### Step 4 : Dynamic KPI Generation
+
+Instead of hardcoded metrics, the platform inspects the uploaded dataset and generates only the KPIs that make sense.
+
+Examples include:
 
 - Total Records
 - Total Features
-- Missing Values
-- Average Values
-- Business Metrics (when applicable)
+- Average Revenue
+- Maximum Salary
+- Top Category
 
-The KPIs change automatically depending on the uploaded dataset.
+The KPI cards automatically change depending on the dataset.
 
-### Step 6: AI Insight Generation
-Instead of relying on fixed rules, the application prepares a lightweight summary of the cleaned dataset containing:
+### Step 5 : AI Business Insights
+
+The cleaned dataset is converted into a **lightweight analytical summary** containing:
 
 - Column names
 - Data types
-- Missing values
 - Descriptive statistics
 - Category distributions
+- Aggregated analytical information
 
-This summarized information is sent to the Gemini API, which generates business-friendly analytical insights tailored to the uploaded dataset.
+This summary is sent to **Gemini AI**, which generates business-friendly insights. The raw preprocessing logic remains entirely local in Pandas.
 
-### Step 7: Dataset Preview
-The cleaned dataset is displayed in an interactive preview table so users can inspect the processed data before downloading it.
+### Step 6 : Preview & Export
 
-### Step 8: Export
-Finally, users can download the cleaned CSV file for further analysis or visualization in external tools such as Excel, Power BI, or Tableau.
+Users can:
+
+- Inspect the cleaned dataset
+- View KPIs and AI insights
+- Download the cleaned CSV
+- Download the generated analysis report
 
 ---
 
-### 🔒 Privacy & Security
+## Adaptive Missing Value Strategy
 
-Data privacy is considered throughout the analysis process.
+The platform chooses the imputation method based on the data rather than using one fixed rule.
 
-- The uploaded dataset is processed locally by the Flask application for cleaning, preprocessing, and KPI generation.
-- Only a **summarized representation** of the cleaned dataset (such as column names, data types, descriptive statistics, and aggregated distributions) is sent to the Gemini API for generating analytical insights.
-- Individual records and personally identifiable information (PII) are not intentionally included in the AI prompt.
-- Uploaded files are stored only temporarily during processing and are automatically removed after the analysis is completed or the cleaned file is downloaded.
-- No datasets are permanently stored by the application.
+| Column Type | Strategy |
+|------------|----------|
+| Numeric (with outliers) | Median |
+| Numeric (no outliers) | Mean |
+| Categorical | Mode |
+| Boolean | Mode |
+| Date | Most frequent date |
 
-## 💻 How to Install and Run Locally
+Outliers are detected using the **Interquartile Range (IQR)** method before selecting Mean or Median.
+
+---
+
+## Dynamic KPI Logic
+
+The KPI engine follows a rule-based decision pipeline.
+
+```text
+Detect column types
+        │
+        ▼
+Identify business metrics
+        │
+        ▼
+Select meaningful columns
+        │
+        ▼
+Calculate relevant KPIs
+        │
+        ▼
+Return JSON → Dashboard Cards
+```
+
+This allows the same application to work across retail, HR, finance, education, healthcare, and other tabular datasets.
+
+---
+
+## Privacy First
+
+The preprocessing pipeline runs **locally using Pandas**.
+
+- Raw uploaded files are stored only temporarily during processing.
+- Temporary files are automatically deleted after completion.
+- The AI module receives a lightweight analytical summary rather than relying on Gemini for data cleaning.
+- Core preprocessing and KPI generation continue to work independently of the AI layer.
+
+---
+
+## Tech Stack
+
+| Category | Technology |
+|----------|------------|
+| Language | Python |
+| Backend | Flask |
+| Data Processing | Pandas, NumPy |
+| AI | Gemini API |
+| Frontend | HTML, CSS, JavaScript |
+
+---
+
+## How to Install and Run Locally
 
 1. **Clone the Repository**
    ```bash
@@ -158,11 +286,17 @@ Data privacy is considered throughout the analysis process.
    ```
 
 3. **Configure Gemini API**
-   Create a `config.py` file in the project root and add:
 
-   ```python
-   GEMINI_API_KEY = "YOUR_GEMINI_API_KEY"
+   Create a `.env` file in the project root and add:
+
    ```
+   GEMINI_API_KEY=your_gemini_api_key_here
+   ```
+
+   The application loads this automatically using `python-dotenv`.
+
+   > If you prefer, you can also set `GEMINI_API_KEY` as a system environment variable instead of using a `.env` file.
+
 
 4. **Run the Application**
    ```bash
@@ -170,6 +304,7 @@ Data privacy is considered throughout the analysis process.
    ```
 
 5. **Open the Application**
+
    Visit:
 
    ```
@@ -177,9 +312,12 @@ Data privacy is considered throughout the analysis process.
    ```
 
 6. **Upload Any CSV Dataset**
+
    Upload your own CSV file, review the generated KPIs and AI-powered insights, then download the cleaned dataset.
 
-## 🎯 Benefits
+---
+
+## Benefits
 
 - Saves significant time by automating repetitive data cleaning and preprocessing tasks.
 - Generates AI-powered business insights within seconds, reducing manual analysis effort.
@@ -188,9 +326,17 @@ Data privacy is considered throughout the analysis process.
 - Enables analysts to download a cleaned dataset for further analysis or reporting.
 - Provides an intuitive interface that allows both technical and non-technical users to analyze datasets easily
 
-## 🔮 Future Scope
+## Future Scope
 
-- Add secure user authentication and personalized user accounts.
-- Store analysis history for each user individually.
-- Allow users to reopen previous analyses and view the complete report without reprocessing the dataset.
-- Integrate support for locally hosted AI models to generate insights while keeping sensitive data entirely on the user's device.
+- User authentication with personalized accounts
+- Individual analysis history for every user
+- Reopen previous datasets without reprocessing
+- Local LLM support for fully offline AI insight generation
+
+---
+
+## Author
+
+**Aqif**
+
+B.Tech CSE (AI & ML) | Data Analytics & AI
