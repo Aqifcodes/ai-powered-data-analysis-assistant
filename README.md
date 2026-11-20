@@ -335,6 +335,12 @@ The preprocessing pipeline runs **locally using Pandas**.
 
 ---
 
+## License
+
+This project is shared for viewing only. See the [LICENSE](LICENSE) file for details.
+
+---
+
 ## Author
 
 **Aqif**
